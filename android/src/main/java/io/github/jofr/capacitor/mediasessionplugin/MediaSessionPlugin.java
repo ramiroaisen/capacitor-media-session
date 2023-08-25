@@ -91,7 +91,9 @@ public class MediaSessionPlugin extends Plugin {
         service.setTitle(title);
         service.setArtist(artist);
         service.setAlbum(album);
-        service.setArtwork(artwork);
+        if(artwork != null) {
+            service.setArtwork(artwork);
+        }
         service.update();
     }
 
@@ -131,8 +133,16 @@ public class MediaSessionPlugin extends Plugin {
         album = call.getString("album", album);
 
         final JSArray artworkArray = call.getArray("artwork");
+        if(artworkArray == null) {
+            return;
+        }
+
         final List<JSONObject> artworkList = artworkArray.toList();
-        for (JSONObject artwork : artworkList) {
+        if(artworkList == null) {
+            return;
+        }
+
+        for (JSONObject artwork: artworkList) {
             String src = artwork.getString("src");
             if (src != null) {
                 Bitmap data;

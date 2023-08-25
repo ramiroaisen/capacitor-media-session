@@ -219,7 +219,7 @@ public class MediaSessionService extends Service {
 
     @SuppressLint("RestrictedApi")
     public void update() {
-        if (possibleActionsUpdate) {
+        if (possibleActionsUpdate && notificationBuilder != null &&  notificationBuilder.mActions != null) {
             notificationBuilder.mActions.clear();
 
             long activePlaybackStateActions = 0;
