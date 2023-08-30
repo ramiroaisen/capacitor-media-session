@@ -264,29 +264,36 @@ public class MediaSessionService extends Service {
         }
 
         if (playbackStateUpdate) {
-            playbackStateBuilder.setState(this.playbackState, this.position, this.playbackSpeed);
-            mediaSession.setPlaybackState(playbackStateBuilder.build());
             playbackStateUpdate = false;
+            if (playbackStateBuilder != null) {
+                playbackStateBuilder.setState(this.playbackState, this.position, this.playbackSpeed);
+                mediaSession.setPlaybackState(playbackStateBuilder.build());
+            }
         }
 
         if (mediaMetadataUpdate) {
-            mediaMetadataBuilder
-                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
-                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
-                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, album)
-                    .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, artwork)
-                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration);
-            mediaSession.setMetadata(mediaMetadataBuilder.build());
             mediaMetadataUpdate = false;
+            if(mediaMetadataBuilder != null && mediaSession != null) {
+                mediaMetadataBuilder
+                        .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
+                        .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
+                        .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, album)
+                        .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, artwork)
+                        .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration);
+
+                mediaSession.setMetadata(mediaMetadataBuilder.build());
+            }
         }
 
         if (notificationUpdate) {
-            notificationBuilder
-                    .setContentTitle(title)
-                    .setContentText(artist + " - " + album)
-                    .setLargeIcon(artwork);
-            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
             notificationUpdate = false;
+            if (notificationManager != null && notificationBuilder != null) {
+                notificationBuilder
+                        .setContentTitle(title)
+                        .setContentText(artist + " - " + album)
+                        .setLargeIcon(artwork);
+                notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+            }
         }
     }
 
